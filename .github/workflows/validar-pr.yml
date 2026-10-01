@@ -1,0 +1,22 @@
+# Validar PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validar:
+    name: validar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validar rastreio de alterações de código
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: node scripts/validar-rastreio.mjs
