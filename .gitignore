@@ -1,2 +1,4 @@
-.cursor
-AGENTS.md
+.cursor/*
+!.cursor/rules/
+.cursor/rules/*
+!.cursor/rules/idioma-pt-br.mdc

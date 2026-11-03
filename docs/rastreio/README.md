@@ -1,6 +1,6 @@
 # Rastreio de alterações
 
-Cada PR que mexe em **código** precisa de um ficheiro nesta pasta a dizer o que mudou e porquê. O CI em `.github/workflows/validar-pr.yml` recusa o PR se isso faltar.
+Cada PR que mexe em **código** precisa de um arquivo nesta pasta a dizer o que mudou e por que. O CI em `.github/workflows/validar-pr.yml` recusa o PR se isso faltar.
 
 ## Quando é obrigatório
 
@@ -13,15 +13,15 @@ Alterações em:
 - `docker-compose.yml`
 - `pnpm-workspace.yaml`
 
-Não é obrigatório para só `Backlog/`, `docs/` (excepto esta regra quando o workflow muda) ou texto de product.
+Não é obrigatório para só `Backlog/`, `docs/` (exceto esta regra quando o workflow muda) ou texto de product.
 
 ## Como criar
 
 1. Copia o modelo abaixo.
 2. Grava como `docs/rastreio/AAAA-MM-DD-<slug-curto>.md`.
-3. Inclui o ficheiro no mesmo PR do código.
+3. Inclui o arquivo no mesmo PR do código.
 
-Não edites só este README — o CI ignora-o.
+Não edite só este README — o CI ignora-o.
 
 ## Modelo
 
@@ -36,13 +36,13 @@ Não edites só este README — o CI ignora-o.
 
 - …
 
-## Porquê
+## Por que
 
 …
 
-## Ficheiros
+## Arquivos
 
-- `caminho/do/ficheiro` — <responsabilidade da mudança>
+- `caminho/do/arquivo` — <responsabilidade da mudança>
 
 ## Como validar
 

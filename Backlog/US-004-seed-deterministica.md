@@ -12,9 +12,11 @@
 
 ## 2. Contexto e justificativa
 
-A arquitectura (secção 52) proíbe `Math.random()` espalhado pela engine. Sem um `RandomGenerator` na fundação, E1 (mapa gerado) e E3 (nascimentos, migração) já nascem irreproduzíveis.
+A arquitetura (seção 52) proíbe `Math.random()` espalhado pela engine. Sem um gerador na fundação, E1 (mapa gerado) e E3 (nascimentos, migração) já nascem irreproduzíveis.
 
-E0 ainda não tem sistemas de cidade. O valor agora é o **contrato**: a engine aceita uma seed, o gerador é injectado no contexto, e dois runs com a mesma seed e os mesmos ticks coincidem. Replay de comandos é pós-MVP; a seed é o pré-requisito barato.
+E0 ainda não tem sistemas de cidade. O valor agora é o **contrato**: a engine aceita uma seed, o gerador é injetado no contexto, e dois runs com a mesma seed e os mesmos ticks coincidem. Replay de comandos é pós-MVP; a seed é o pré-requisito barato.
+
+Mostrar a seed no overlay F1 **não** é desta US — está na US-104.
 
 Métrica de sucesso: um teste Vitest corre o loop N ticks com seed `123456` duas vezes e obtém a mesma sequência de números (e o mesmo estado do contador/calendário).
 
@@ -24,15 +26,17 @@ Métrica de sucesso: um teste Vitest corre o loop N ticks com seed `123456` duas
 - RN2: Nenhum código em `packages/game-*` usa `Math.random()` (nem `crypto.getRandomValues` para lógica de jogo).
 - RN3: A mesma seed + a mesma sequência de chamadas produz a mesma sequência de valores.
 - RN4: Seeds diferentes produzem sequências diferentes (não se exige qualidade criptográfica).
-- RN5: 🔶 Seed por omissão de uma sessão nova: **123456** em testes; 🔶 no browser uma seed fixa de desenvolvimento ou derivada de um valor de sessão, documentada — **não** `Date.now()` escondido dentro dos sistemas.
-- RN6: O gerador vive no contexto da engine (injectado); sistemas futuros recebem o contexto, não instanciam o seu próprio RNG.
+- RN5: Seed canónica **123456** (arquitetura, seção 52): obrigatória nos testes; também é a seed por padrão de uma sessão nova no browser neste lote. **Não** se usa `Date.now()` nem acaso global dentro dos sistemas.
+- RN6: O gerador vive no contexto da engine (injetado); sistemas futuros recebem o contexto, não instanciam o seu próprio RNG.
+- RN7: API pública estável em PT-BR: `proximo()` devolve um número em **[0, 1)**; `proximoInteiro(min, max)` devolve um inteiro inclusivo no intervalo. Não há outra API de acaso no core.
+- RN8: A seed é consultável no contexto da engine (testes / código). O overlay F1 que a mostra ao jogador é **US-104**.
 
 ## 4. Critérios de aceitação (Gherkin)
 
 ### CA1: Mesma seed, mesmo resultado
 ```gherkin
 Dado a seed 123456
-Quando corro 100 ticks headless e peço 50 números ao gerador
+Quando corro 100 ticks headless e peço 50 números ao gerador via proximo
 E volto a correr o mesmo cenário do zero com a mesma seed
 Então as duas sequências de 50 números são idênticas
 E o calendário final (se o relógio estiver ligado) é idêntico
@@ -41,24 +45,24 @@ E o calendário final (se o relógio estiver ligado) é idêntico
 ### CA2: Seed diferente, sequência diferente
 ```gherkin
 Dado duas engines com seeds 123456 e 123457
-Quando peço os primeiros 20 números a cada uma
+Quando peço os primeiros 20 números a cada uma com proximo
 Então as sequências não são iguais
 ```
 
 ### CA3: Proibição de Math.random no core
 ```gherkin
 Dado o código-fonte dos packages de jogo
-Quando a suite de verificação corre
-Então não há usos de Math.random nesses packages
+Quando a suite de testes (grep ou lint) corre no CI
+Então a suite falha se existir Math.random ou crypto.getRandomValues nesses packages
 E um teste que exercita o loop não depende de acaso global do runtime
 ```
 
-### CA4: Sessão expõe a seed
+### CA4: Sessão expõe a seed no contexto
 ```gherkin
-Dado que o jogo arrancou
-Quando consulto o contexto da engine (teste ou indicador de debug mínimo)
-Então a seed em uso é um inteiro conhecido
-E posso arrancar outra instância headless com essa seed
+Dado que o jogo arrancou com a seed por padrão
+Quando consulto o contexto da engine (teste headless ou API do core)
+Então a seed em uso é 123456
+E posso arrancar outra instância headless com essa seed e obter a mesma sequência
 ```
 
 ### CA5: Sem gerador, a engine falha cedo
@@ -69,46 +73,60 @@ Então a engine rejeita o arranque ou o tick com erro explícito
 E não cai para Math.random em silêncio
 ```
 
+### CA6: Intervalo da API
+```gherkin
+Dado um gerador com seed 123456
+Quando chamo proximo 100 vezes
+Então cada valor está em [0, 1) (0 inclusive, 1 exclusive)
+Quando chamo proximoInteiro(3, 7) 50 vezes
+Então cada valor é um inteiro entre 3 e 7 inclusive
+```
+
 ## 5. Fora do escopo
 
 - Replay de comandos, gravação de input, comparação de versões da engine (pós-MVP).
 - Geração procedural rica do mapa (US-102 usa a seed se gerar terreno; o algoritmo é dessa US).
 - Criptografia, fairness online, anti-cheat.
-- UI para o jogador escolher a seed (pode ser só debug / teste).
+- UI para o jogador escolher a seed.
+- Mostrar a seed no overlay F1 (US-104).
 
 ## 6. Dependências
 
 - **Bloqueia:** US-102 (se o mapa inicial for gerado com acaso)
 - **Bloqueada por:** US-002
-- **Relacionada:** US-003 (mesmo contexto de engine), US-104 (a seed pode aparecer no overlay mais tarde)
+- **Relacionada:** US-003 (mesmo contexto de engine), US-104 (overlay F1 mostra a seed)
 
 ## 7. Requisitos não-funcionais
 
 - **Performance:** gerar um número é O(1); sem alocações excessivas por tick no gerador.
-- **Segurança/Privacidade:** o RNG **não** é criptográfico e **não** deve ser usado para tokens/auth (auth não existe neste lote).
-- **Acessibilidade:** não há UI obrigatória; se a seed for mostrada, é texto.
-- **Observabilidade:** seed consultável; falha CA5 com mensagem de erro clara em log de teste.
-- **Internacionalização:** não aplicável salvo label de debug futuro em PT-BR (`Semente`).
+- **Segurança/Privacidade:** o gerador **não** é criptográfico e **não** deve ser usado para tokens/auth (auth não existe neste lote).
+- **Acessibilidade:** não há UI obrigatória nesta US.
+- **Observabilidade:** seed consultável no contexto; falha CA5 com erro explícito. Overlay visual = US-104.
+- **Internacionalização:** nomes da API em PT-BR (`proximo`, `proximoInteiro`). Label `Semente` no overlay fica para a US-104.
 
 ## 8. Definição de Pronto (DoR — entrada do sprint)
 
-- [ ] Narrativa, critérios e regras revistos com equipa
-- [ ] Algoritmo do PRNG (mulberry32, xorshift, etc.) escolhido — detalhe de implementação, mas a seed é o contrato
-- [ ] RN5: seed default no browser confirmada
-- [ ] Dependências mapeadas e desbloqueadas
-- [ ] Estimativa consensual da equipa
+- [x] Narrativa, critérios e regras revistos (refinement 2026-11-03)
+- [x] Seed canónica **123456** (testes e omissão no browser)
+- [x] CA3 = teste/CI que falha com `Math.random` no core
+- [x] Overlay F1 da seed = US-104
+- [x] API: `proximo()` em [0, 1) e `proximoInteiro(min, max)`
+- [ ] Algoritmo interno do PRNG (mulberry32, xorshift, …) — detalhe de implementação, desde que determinístico
+- [ ] Estimativa consensual da equipe
 
 ## 9. Definição de Concluído (DoD — saída da US)
 
 - [ ] Código revisto e *merged* na branch principal
-- [ ] Testes CA1–CA3 e CA5 a passar de forma determinística no CI local
-- [ ] Check (lint ou teste de grep) contra `Math.random` nos packages de jogo
+- [ ] Testes CA1, CA2, CA3, CA5 e CA6 a passar de forma determinística
+- [ ] Check automatizado contra `Math.random` / `crypto.getRandomValues` nos packages de jogo
+- [ ] Sem overlay F1 nesta US
 - [ ] Sem regressões nas suites existentes
 - [ ] *Feature flag* não aplicável
 
 ## 10. Notas e suposições
 
-- 🔶 Seed `123456` é a da própria arquitectura (secção 52); usar nos testes como número canónico.
-- 🔶 CA3 pode ser um teste que lê ficheiros fonte ou uma convenção + revisão; o importante é falhar o CI se alguém colar `Math.random` no core.
-- ❓ Mostrar a seed no overlay F1 (US-104) já em E1, ou só em ferramentas internas?
-- ❓ Intervalo do gerador: float 0..1 vs inteiro 32-bit — a API pública deve ser uma e estável. 🔶 `proximo()` em [0, 1) + `proximoInteiro(min, max)`.
+- Seed **123456** fechada: testes e sessão nova no browser neste lote.
+- CA3 fechado: a suite **falha no CI** se alguém colar `Math.random` (ou `crypto.getRandomValues`) em `packages/game-*`.
+- Mostrar a seed no F1 fica na **US-104** (já relacionada; o overlay é o lugar certo).
+- API fechada: `proximo()` ∈ [0, 1) e `proximoInteiro(min, max)` inclusivo.
+- Algoritmo do PRNG não está congelado; só o contrato da seed e da API.

@@ -257,6 +257,23 @@ Velocidades possíveis:
 
 A velocidade altera a quantidade de tempo simulado, não a lógica dos sistemas.
 
+Conversão inicial (US-003):
+
+```text
+20 simulation ticks = 1 hora de jogo
+1 segundo real a 1× ≈ 1 hora de jogo
+```
+
+Calendário no MVP (E0):
+
+```text
+meses com 30 dias
+24 horas por dia
+data inicial: ano 1, mês 1, dia 1, hora 0
+```
+
+**Visão futura (obrigatória, não neste lote):** o calendário do mundo deve passar a seguir o **calendário gregoriano** (meses com 28–31 dias, anos bissextos). O modelo de 30 dias é um atalho consciente até essa US existir. Quando se adotar o gregoriano, `GameDate` e o avanço do relógio concentram a mudança — os sistemas não devem assumir “todo mês tem 30 dias” espalhado no código.
+
 ---
 
 # 8. World
@@ -516,7 +533,7 @@ Exemplo:
 
 ```json
 {
-  "id": "small_factory",
+  "id": "small_fatory",
   "category": "industrial",
   "constructionCost": 5000,
   "maintenanceCost": 150,
@@ -1124,7 +1141,7 @@ Exemplo de painel:
 ┌───────────────────────────┐
 │ Building                 X│
 ├───────────────────────────┤
-│ 🏭 Factory                │
+│ 🏭 Fatory                │
 │                           │
 │ Workers       42 / 50     │
 │ Production    82%         │
@@ -1778,7 +1795,7 @@ BuildRoad
  ↓
 BuildHouse
  ↓
-BuildFactory
+BuildFatory
  ↓
 ChangeTax
  ↓

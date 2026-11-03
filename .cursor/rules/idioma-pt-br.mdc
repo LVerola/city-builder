@@ -1,0 +1,42 @@
+---
+description: Idioma obrigatório — português brasileiro (PT-BR), nunca português de Portugal.
+alwaysApply: true
+---
+
+# Idioma — português brasileiro
+
+Todo o texto que o agente produzir neste repositório é **português brasileiro (PT-BR)**.
+
+**Não use português de Portugal (PT-PT).** Nem em documentação, nem em comentários, nem em copy de UI, nem em nomes de código/pastas novos, nem nas respostas ao usuário.
+
+## Obrigatório
+
+- UI, erros, toasts, README, backlog, arquitetura, rastreio, PRs, commits: PT-BR.
+- Código novo (variáveis, funções, comentários): PT-BR.
+- Arquivos e pastas novos: PT-BR (`kebab-case` em rotas/pastas).
+
+## Trocas típicas (PT-PT → PT-BR)
+
+| Evitar (PT-PT) | Usar (PT-BR) |
+|---|---|
+| ficheiro | arquivo |
+| utilizador | usuário |
+| ecrã | tela |
+| telemóvel | celular |
+| rato (periférico) | mouse |
+| câmara (jogo/foto) | câmera |
+| grelha | grade |
+| equipa | equipe |
+| secção | seção |
+| selecção / acção | seleção / ação |
+| actual / actualizar | atual / atualizar |
+| excepto / excepções | exceto / exceções |
+| objecto / objectivo | objeto / objetivo |
+| projecto / arquitectura | projeto / arquitetura |
+| adoptar | adotar |
+| aceite (particípio) | aceito / aceita |
+| correcto | correto |
+| reflecte | reflete |
+| táctil | tátil |
+
+Inglês técnico de API/SDK/framework permanece (`page.tsx`, `GameLoop`, `pull request`).
