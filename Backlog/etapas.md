@@ -1,9 +1,9 @@
 # Acompanhamento das etapas
 
 > **Como usar:** marca da esquerda para a direita. Não saltes um estado: *Desenvolvido* implica *Refinado*, que implica *Planejado*.
-> **Última actualização:** 2026-10-01
+> **Última atualização:** 2026-10-01
 
-**Próximo foco:** refinar a [US-001](./US-001-abrir-jogo-canvas.md) (primeira do caminho crítico).
+**Próximo foco:** decompor e desenvolver a [US-001](./US-001-abrir-jogo-canvas.md) (menu `/`, canvas em `/jogo`).
 
 Inventário das user stories: [README.md](./README.md).
 
@@ -11,8 +11,8 @@ Inventário das user stories: [README.md](./README.md).
 
 | Estado | Quando marcar |
 |---|---|
-| **Planejado** | A etapa ou a US está recortada por escrito (ficheiro no backlog ou linha neste documento). |
-| **Refinado** | 🔶 e ❓ fechados, DoR cumprido, a equipa estima e aceita desenvolver. |
+| **Planejado** | A etapa ou a US está recortada por escrito (arquivo no backlog ou linha neste documento). |
+| **Refinado** | 🔶 e ❓ fechados, DoR cumprido, a equipe estima e aceita desenvolver. |
 | **Desenvolvido** | DoD cumprido: merged, testes a passar, critérios de aceitação validados. |
 
 ---
@@ -73,27 +73,27 @@ Marca só o estado da **etapa inteira** (todas as US dela no mesmo estado, ou a 
 Critério de saída: `pnpm` abre o jogo; canvas com placeholder; 20 ticks/s independentes do FPS; relógio pausa/1×/2×/4×; teste com a mesma seed; `game-core` sem React/Canvas/HTTP.
 
 ### US-001 — Abrir o jogo no browser com canvas
-[ficheiro](./US-001-abrir-jogo-canvas.md)
+[arquivo](./US-001-abrir-jogo-canvas.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-002 — Avançar a simulação em timestep fixo
-[ficheiro](./US-002-timestep-fixo.md)
+[arquivo](./US-002-timestep-fixo.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-003 — Controlar o relógio do jogo
-[ficheiro](./US-003-relogio-do-jogo.md)
+[arquivo](./US-003-relogio-do-jogo.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-004 — Reproduzir a simulação com seed
-[ficheiro](./US-004-seed-deterministica.md)
+[arquivo](./US-004-seed-deterministica.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 Quando as quatro US estiverem *Desenvolvido*, marca a Etapa 0 no resumo.
@@ -102,30 +102,30 @@ Quando as quatro US estiverem *Desenvolvido*, marca a Etapa 0 no resumo.
 
 ## Etapa 1 — Mundo navegável
 
-Critério de saída: mapa 64×64 com cinco terrenos, selecção de tile, overlay de debug (grid, chunks, FPS/TPS).
+Critério de saída: mapa 64×64 com cinco terrenos, seleção de tile, overlay de debug (grid, chunks, FPS/TPS).
 
-### US-101 — Navegar o mapa com a câmara
-[ficheiro](./US-101-navegar-mapa-camera.md)
+### US-101 — Navegar o mapa com a câmera
+[arquivo](./US-101-navegar-mapa-camera.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-102 — Visualizar terreno em tiles e chunks
-[ficheiro](./US-102-visualizar-terreno-chunks.md)
+[arquivo](./US-102-visualizar-terreno-chunks.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
-### US-103 — Selecionar um tile com o rato
-[ficheiro](./US-103-selecionar-tile.md)
+### US-103 — Selecionar um tile com o mouse
+[arquivo](./US-103-selecionar-tile.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-104 — Diagnosticar o mapa no modo debug
-[ficheiro](./US-104-modo-debug-mapa.md)
+[arquivo](./US-104-modo-debug-mapa.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 Quando as quatro US estiverem *Desenvolvido*, marca a Etapa 1 no resumo.
@@ -137,39 +137,39 @@ Quando as quatro US estiverem *Desenvolvido*, marca a Etapa 1 no resumo.
 Critério de saída: pintar terreno, estradas, zonas R/C/I, 2–3 edifícios por dados, demolir, inspecionar no HUD — sem React por entidade.
 
 ### US-201 — Pintar o terreno com ferramenta
-[ficheiro](./US-201-pintar-terreno.md)
+[arquivo](./US-201-pintar-terreno.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-202 — Construir estradas
-[ficheiro](./US-202-construir-estradas.md)
+[arquivo](./US-202-construir-estradas.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-203 — Zonar uma área (R/C/I)
-[ficheiro](./US-203-zonar-area.md)
+[arquivo](./US-203-zonar-area.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-204 — Construir edifício a partir de definição
-[ficheiro](./US-204-construir-edificio.md)
+[arquivo](./US-204-construir-edificio.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-205 — Demolir construção, estrada ou zona
-[ficheiro](./US-205-demolir-construcao.md)
+[arquivo](./US-205-demolir-construcao.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 ### US-206 — Inspecionar tile ou edifício no HUD
-[ficheiro](./US-206-inspecionar-entidade.md)
+[arquivo](./US-206-inspecionar-entidade.md)
 - [x] Planejado
-- [ ] Refinado
+- [x] Refinado
 - [ ] Desenvolvido
 
 Quando as seis US estiverem *Desenvolvido*, marca a Etapa 2 no resumo.
@@ -180,7 +180,7 @@ Quando as seis US estiverem *Desenvolvido*, marca a Etapa 2 no resumo.
 
 Ainda **sem user stories**. Marca *Planejado* quando o lote de US existir no backlog.
 
-Escopo previsto: população e emprego agregados; dinheiro + imposto simples; procura R/C/I no HUD; electricidade/água globais; save versionado em IndexedDB.
+Escopo previsto: população e emprego agregados; dinheiro + imposto simples; procura R/C/I no HUD; eletricidade/água globais; save versionado em IndexedDB.
 
 - [ ] Recortar US (3.1 simulação mínima)
 - [ ] Recortar US (3.2 persistência local)
