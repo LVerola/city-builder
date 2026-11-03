@@ -2,3 +2,16 @@
 !.cursor/rules/
 .cursor/rules/*
 !.cursor/rules/idioma-pt-br.mdc
+
+node_modules/
+.next/
+out/
+dist/
+coverage/
+.turbo/
+.pnpm-store/
+*.tsbuildinfo
+.DS_Store
+.env
+.env*.local
+*.log
